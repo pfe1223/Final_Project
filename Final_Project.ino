@@ -5,42 +5,43 @@ int xCoord2 = 0;
 int xDiff = 0;
 
 //initialize variables to measure y-coordinate
-int yPin = 6;
+int yPin = A5;
 int yCoord1 = 0;
 int yCoord2 = 0;
 int yDiff = 0;
 
-//initialize variable to record z-coordinate
-int zCoord = 0;
-
 //threshold to record data or not
 int threshold = 20;
+
+//counter for the number of data pairs collected
+int dataCount = 0;
 
 void setup(){
   Serial.begin(9600);
   pinMode(xPin, INPUT);
+  pinMode(yPin, INPUT);
 }
 
 void loop(){
-  //record original x and y-coordinates
-  xCoord1 = analogRead(xPin);
-  yCoord1 = analogRead(yPin);
+  if(dataCount < 123){ //this will keep data collection to 122 data points
   
-  delay(50); //short delay to account for movement
+    //record original x and y-coordinates
+    xCoord1 = analogRead(xPin);
+    yCoord1 = analogRead(yPin);
   
-  //record second x and y-coordinates
-  xCoord2 = analogRead(xPin);
-  yCoord2 = analogRead(yPin);
+    delay(50); //short delay to account for movement
   
-  //calculate differences in x and y movements
-  xDiff = abs(xCoord2 - xCoord1);
-  yDiff = abs(yCoord2 - yCoord1);
-  if(xDiff > threshold && yDiff > threshold){
-    Serial.print("X = ");
-    Serial.println(xDiff);
-    Serial.print("Y = ");
-    Serial.println(yDiff);
-    Serial.println();
+    //record second x and y-coordinates
+    xCoord2 = analogRead(xPin);
+    yCoord2 = analogRead(yPin);
+  
+    //calculate differences in x and y movements
+    xDiff = abs(xCoord2 - xCoord1);
+    yDiff = abs(yCoord2 - yCoord1);
+    if(xDiff > threshold || yDiff > threshold){
+      Serial.println(xDiff);
+      Serial.println(yDiff);
+      dataCount++;
+    }
   }
-  delay(500);
 }

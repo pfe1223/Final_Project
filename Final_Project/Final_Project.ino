@@ -10,15 +10,13 @@ int yCoord1 = 0;
 int yCoord2 = 0;
 int yDiff = 0;
 
-//initialize variable to record z-coordinate
-int zCoord = 0;
-
 //threshold to record data or not
 int threshold = 20;
 
 void setup(){
   Serial.begin(9600);
   pinMode(xPin, INPUT);
+  pinMode(yPin, INPUT);
 }
 
 void loop(){
